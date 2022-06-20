@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\CitiesGroupController;
+use App\Http\Controllers\ProductsDiscountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +19,30 @@ use App\Http\Controllers\ProductController;
 |
 */
 
+Route::prefix('city')->group(function () {
+    Route::get('/all', [CityController::class, 'all']);
+    Route::post('/insert', [CityController::class, 'insert']);
+    Route::post('/update/{id}', [CityController::class, 'update']);
+    Route::get('/delete/{id}', [CityController::class, 'delete']);
+});
+
+Route::prefix('cities-group')->group(function () {
+    Route::get('/all', [CitiesGroupController::class, 'all']);
+    Route::post('/insert', [CitiesGroupController::class, 'insert']);
+    Route::post('/update/{id}', [CitiesGroupController::class, 'update']);
+    Route::get('/delete/{id}', [CitiesGroupController::class, 'delete']);
+});
+
 Route::prefix('product')->group(function () {
     Route::get('/all', [ProductController::class, 'all']);
     Route::post('/insert', [ProductController::class, 'insert']);
     Route::post('/update/{id}', [ProductController::class, 'update']);
     Route::get('/delete/{id}', [ProductController::class, 'delete']);
+});
+
+Route::prefix('products-discount')->group(function () {
+    Route::get('/all', [ProductsDiscountController::class, 'all']);
+    Route::post('/insert', [ProductsDiscountController::class, 'insert']);
+    Route::post('/update/{id}', [ProductsDiscountController::class, 'update']);
+    Route::get('/delete/{id}', [ProductsDiscountController::class, 'delete']);
 });
