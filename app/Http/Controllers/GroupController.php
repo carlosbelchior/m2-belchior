@@ -6,7 +6,7 @@ use App\Models\CitiesGroup;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CitiesGroupController extends Controller
+class GroupController extends Controller
 {
     public function all()
     {
