@@ -49,6 +49,10 @@ class ProductController extends Controller
 
     public function update(Request $request, $product_id)
     {
+        // Check product exist
+        if(!Product::find($product_id))
+            return 'Product not found.';
+            
         // Get data post
         $data = $request->all();
         $product = Product::find($product_id);
@@ -56,10 +60,6 @@ class ProductController extends Controller
         // Check campaign exist
         if($request->campaign_id && !Campaign::find($request->campaign_id))
             return 'Campaign not found.';
-
-        // Check product exist
-        if(!Product::find($product_id))
-            return 'Product not found.';
 
         // Validate data post
         $validator = Validator::make($data, [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Campaign;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class GroupController extends Controller
     public function all()
     {
         // Return all groups
-        return Group::all();
+        return Group::with(['campaign'])->get();
     }
 
     public function insert(Request $request)
@@ -26,7 +27,7 @@ class GroupController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\Group,name',
+            'name' => 'required|min:3',
             'campaign_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
@@ -34,6 +35,10 @@ class GroupController extends Controller
                 $validator->errors()
             ], 400);
         }
+
+        // Check campaign exist and actived
+        if(Campaign::find($request->input('campaign_id'))->status != 1)
+            return 'Campaign not found or inactive.';
         
         // Save group
         $group = Group::create($data);
@@ -48,17 +53,17 @@ class GroupController extends Controller
 
     public function update(Request $request, $group_id)
     {
-        // Get data post
-        $data = $request->all();
-        $group = Group::find($group_id);
-
         // Check group exist
         if(!Group::find($group_id))
             return 'Group not found.';
 
+        // Get data post
+        $data = $request->all();
+        $group = Group::find($group_id);
+
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\Group,name',
+            'name' => 'required|min:3',
             'campaign_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
@@ -67,6 +72,14 @@ class GroupController extends Controller
             ], 400);
         }
 
+        // Check campaign exist and actived
+        if(!$request->input('campaign_id'))
+            $data['campaign_id'] = NULL;
+
+        // Check campaign exist and actived
+        if($request->input('campaign_id') && Campaign::find($request->input('campaign_id'))->status != 1)
+            return 'Campaign not found or inactive.';
+            
         // Update group
         if($group->update($data))
             return 'Group successfuly updated.';
@@ -83,7 +96,7 @@ class GroupController extends Controller
         // Start transaction
         DB::beginTransaction();
 
-        // Try delete group and city_group
+        // Try delete group
         try {
 
             City::where('group_id', $group_id)->update(['group_id' => NULL]);

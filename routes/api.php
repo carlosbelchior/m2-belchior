@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CityController;
-use App\Http\Controllers\CitiesGroupController;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProductsDiscountController;
 
@@ -32,6 +32,13 @@ Route::prefix('groups')->group(function () {
     Route::post('/insert', [GroupController::class, 'insert']);
     Route::post('/update/{id}', [GroupController::class, 'update']);
     Route::get('/delete/{id}', [GroupController::class, 'delete']);
+});
+
+Route::prefix('campaigns')->group(function () {
+    Route::get('/all', [CampaignController::class, 'all']);
+    Route::post('/insert', [CampaignController::class, 'insert']);
+    Route::post('/update/{id}', [CampaignController::class, 'update']);
+    Route::get('/delete/{id}', [CampaignController::class, 'delete']);
 });
 
 Route::prefix('product')->group(function () {

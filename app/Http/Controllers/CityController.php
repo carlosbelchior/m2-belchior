@@ -40,10 +40,10 @@ class CityController extends Controller
             return 'Group not found.';
         
         // Save city
-        $product = City::create($data);
+        $city = City::create($data);
 
         // Check save
-        if($product)
+        if($city)
             return 'City successfuly saved.';
 
         return 'Oops! An error ocurred, check data and try again.';
@@ -52,6 +52,10 @@ class CityController extends Controller
 
     public function update(Request $request, $city_id)
     {
+        // Check city exist
+        if(!City::find($city_id))
+            return 'City not found.';
+    
         // Get data post
         $data = $request->all();
         $city = City::find($city_id);
@@ -67,10 +71,6 @@ class CityController extends Controller
             ], 400);
         }
 
-        // Check city exist
-        if(!City::find($city_id))
-            return 'City not found.';
-    
         // Check group exist
         if($request->input('group_id') && !Group::find($request->input('group_id')))
             return 'Group not found.';
