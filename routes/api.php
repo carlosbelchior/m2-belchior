@@ -37,7 +37,6 @@ Route::prefix('groups')->group(function () {
 Route::prefix('cities-group')->group(function () {
     Route::get('/all', [CitiesGroupController::class, 'all']);
     Route::post('/insert', [CitiesGroupController::class, 'insert']);
-    Route::post('/update/{id}', [CitiesGroupController::class, 'update']);
     Route::get('/delete/{id}', [CitiesGroupController::class, 'delete']);
 });
 

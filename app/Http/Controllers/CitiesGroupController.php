@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\CitiesGroup;
+use App\Models\City;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -10,8 +12,8 @@ class CitiesGroupController extends Controller
 {
     public function all()
     {
-        // Return all products
-        return City::all();
+        // Return all data
+        return CitiesGroup::orderBy('group_id', 'ASC')->get();
     }
 
     public function insert(Request $request)
@@ -21,60 +23,39 @@ class CitiesGroupController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\City,name',
-            'group_id' => 'nullable|numeric',
+            'city_id' => 'numeric',
+            'group_id' => 'numeric',
         ]);
         if($validator->fails()) {
             return response()->json([
                 $validator->errors()
             ], 400);
         }
-        
-        // Save product
-        $product = City::create($data);
+
+        // Check exist city and group
+        if(!City::find($request->input('city_id')) || !Group::find($request->input('group_id')))
+            return 'City or group not found.';
+
+        // Save data
+        $cities_group = CitiesGroup::create($data);
 
         // Check save
-        if($product)
-            return 'City successfuly saved.';
+        if($cities_group)
+            return 'City and group successfuly saved.';
 
         return 'Oops! An error ocurred, check data and try again.';
 
     }
 
-    public function update(Request $request, $city_id)
+    public function delete($city_group_id)
     {
-        // Get data post
-        $data = $request->all();
-        $city = City::find($city_id);
+        // Check exist
+        if(!CitiesGroup::find($city_group_id))
+            return 'Data not found.';
 
-        // Check city exist
-        if(!City::find($city_id))
-            return 'City not found.';
-
-        // Validate data post
-        $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\City,name',
-            'group_id' => 'nullable|numeric',
-        ]);
-        if($validator->fails()) {
-            return response()->json([
-                $validator->errors()
-            ], 400);
-        }
-
-        if($city->update($data))
-            return 'City successfuly updated.';
-
-        return 'Oops! An error ocurred, check data and try again.';
-    }
-
-    public function delete($city_id)
-    {
-        if(!CitiesGroup::find($city_id))
-            return 'City not found.';
-
-        if(CitiesGroup::find($city_id)->delete())
-            return 'City removed for this group.';
+        // Delete
+        if(CitiesGroup::find($city_group_id)->delete())
+            return 'City and group removed.';
 
         return 'Oops! An error ocurred, try again.';
     }
