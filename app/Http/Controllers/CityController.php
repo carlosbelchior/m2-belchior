@@ -9,13 +9,14 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\City;
 use App\Models\CitiesGroup;
+use App\Models\Group;
 
 class CityController extends Controller
 {
     public function all()
     {
         // Return all cities
-        return City::with(['groups'])->get();
+        return City::with(['group'])->get();
     }
 
     public function insert(Request $request)
@@ -25,7 +26,7 @@ class CityController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\City,name',
+            'name' => 'required|min:3',
             'group_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
@@ -33,6 +34,10 @@ class CityController extends Controller
                 $validator->errors()
             ], 400);
         }
+
+        // Check group exist
+        if($request->input('group_id') && !Group::find($request->input('group_id')))
+            return 'Group not found.';
         
         // Save city
         $product = City::create($data);
@@ -51,13 +56,9 @@ class CityController extends Controller
         $data = $request->all();
         $city = City::find($city_id);
 
-        // Check city exist
-        if(!City::find($city_id))
-            return 'City not found.';
-
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\City,name',
+            'name' => 'required|min:3',
             'group_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
@@ -65,6 +66,14 @@ class CityController extends Controller
                 $validator->errors()
             ], 400);
         }
+
+        // Check city exist
+        if(!City::find($city_id))
+            return 'City not found.';
+    
+        // Check group exist
+        if($request->input('group_id') && !Group::find($request->input('group_id')))
+            return 'Group not found.';
 
         // Update city
         if($city->update($data))
@@ -79,23 +88,9 @@ class CityController extends Controller
         if(!City::find($city_id))
             return 'City not found.';
 
-        // Start transaction
-        DB::beginTransaction();
-
-        // Try delete city and city_group
-        try {
-
-            CitiesGroup::where('city_id', $city_id)->delete();
-            City::find($city_id)->delete();
-    
-            DB::commit();
-    
-            return 'City delete successfuly.';
-    
-        } catch(Exception $e) {
-            DB::rollback();
-            return 'Oops! An error ocurred, try again.';
-        }
+        // Delete city
+        if(City::find($city_id)->delete())
+            return 'City successfuly deleted.';
 
         return 'Oops! An error ocurred, try again.';
     }

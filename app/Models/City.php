@@ -13,8 +13,8 @@ class City extends Model
     protected $table = 'cities';
     protected $fillable = ['name', 'group_id'];
 
-    public function groups()
+    public function group()
     {
-        return $this->belongsToMany(Group::class, CitiesGroup::class, 'city_id', 'group_id');
+        return $this->hasOne(Group::class, 'id', 'group_id');
     }
 }

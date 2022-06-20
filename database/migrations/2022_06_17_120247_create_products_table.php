@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->double('price', 10, 2);
-            $table->foreignId('campaign_id')->nullable()->constrained('campaigns');
             $table->timestamps();
         });
     }

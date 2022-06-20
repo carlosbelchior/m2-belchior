@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\CitiesGroup;
+use App\Models\City;
 use App\Models\Group;
 
 class GroupController extends Controller
@@ -83,7 +84,7 @@ class GroupController extends Controller
         // Try delete group and city_group
         try {
 
-            CitiesGroup::where('group_id', $group_id)->delete();
+            City::where('group_id', $group_id)->update(['group_id' => NULL]);
             Group::find($group_id)->delete();
     
             DB::commit();
