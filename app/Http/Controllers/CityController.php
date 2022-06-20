@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CitiesGroup;
-use App\Models\City;
-use App\Models\Group;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\City;
+use App\Models\CitiesGroup;
 
 class CityController extends Controller
 {
     public function all()
     {
         // Return all cities
-        return City::all();
+        return City::with(['groups'])->get();
     }
 
     public function insert(Request $request)
@@ -77,9 +79,23 @@ class CityController extends Controller
         if(!City::find($city_id))
             return 'City not found.';
 
-        // Delete city
-        if(City::find($city_id)->delete())
+        // Start transaction
+        DB::beginTransaction();
+
+        // Try delete city and city_group
+        try {
+
+            CitiesGroup::where('city_id', $city_id)->delete();
+            City::find($city_id)->delete();
+    
+            DB::commit();
+    
             return 'City delete successfuly.';
+    
+        } catch(Exception $e) {
+            DB::rollback();
+            return 'Oops! An error ocurred, try again.';
+        }
 
         return 'Oops! An error ocurred, try again.';
     }
