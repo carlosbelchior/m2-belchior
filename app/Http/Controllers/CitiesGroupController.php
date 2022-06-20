@@ -11,7 +11,7 @@ class CitiesGroupController extends Controller
     public function all()
     {
         // Return all products
-        return CitiesGroup::all();
+        return City::all();
     }
 
     public function insert(Request $request)
@@ -21,7 +21,8 @@ class CitiesGroupController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\CitiesGroup,name'
+            'name' => 'required|unique:App\Models\City,name',
+            'group_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -30,11 +31,11 @@ class CitiesGroupController extends Controller
         }
         
         // Save product
-        $group = CitiesGroup::create($data);
+        $product = City::create($data);
 
         // Check save
-        if($group)
-            return 'Group city successfuly saved.';
+        if($product)
+            return 'City successfuly saved.';
 
         return 'Oops! An error ocurred, check data and try again.';
 
@@ -44,15 +45,16 @@ class CitiesGroupController extends Controller
     {
         // Get data post
         $data = $request->all();
-        $group_city = CitiesGroup::find($city_id);
+        $city = City::find($city_id);
 
         // Check city exist
-        if(!CitiesGroup::find($city_id))
-            return 'Group city city not found.';
+        if(!City::find($city_id))
+            return 'City not found.';
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\CitiesGroup,name'
+            'name' => 'required|unique:App\Models\City,name',
+            'group_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -60,19 +62,19 @@ class CitiesGroupController extends Controller
             ], 400);
         }
 
-        if($group_city->update($data))
-            return 'Group city successfuly updated.';
+        if($city->update($data))
+            return 'City successfuly updated.';
 
         return 'Oops! An error ocurred, check data and try again.';
     }
 
-    public function delete($group_id)
+    public function delete($city_id)
     {
-        if(!CitiesGroup::find($group_id))
-            return 'Group city not found.';
+        if(!CitiesGroup::find($city_id))
+            return 'City not found.';
 
-        if(CitiesGroup::find($group_id)->delete())
-            return 'Group city delete successfuly.';
+        if(CitiesGroup::find($city_id)->delete())
+            return 'City removed for this group.';
 
         return 'Oops! An error ocurred, try again.';
     }

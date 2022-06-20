@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CitiesGroup;
 use App\Models\City;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,10 +21,6 @@ class CityController extends Controller
         // Get data post
         $data = $request->all();
 
-        // Check campaign exist
-        if($request->group_id && !City::find($request->group_id))
-            return 'Group not found.';
-        
         // Validate data post
         $validator = Validator::make($data, [
             'name' => 'required|unique:App\Models\City,name',
@@ -51,10 +48,6 @@ class CityController extends Controller
         // Get data post
         $data = $request->all();
         $city = City::find($city_id);
-
-        // Check group exist
-        if($request->campaign_id && !CitiesGroup::find($request->campaign_id))
-            return 'Campaign not found.';
 
         // Check city exist
         if(!City::find($city_id))
