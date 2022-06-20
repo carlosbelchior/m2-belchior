@@ -13,7 +13,7 @@ class CityController extends Controller
     public function all()
     {
         // Return all cities
-        return City::all();
+        return City::with(['groups'])->get();
     }
 
     public function insert(Request $request)
