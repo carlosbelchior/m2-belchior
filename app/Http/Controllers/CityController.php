@@ -12,7 +12,7 @@ class CityController extends Controller
 {
     public function all()
     {
-        // Return all products
+        // Return all cities
         return City::all();
     }
 
@@ -32,7 +32,7 @@ class CityController extends Controller
             ], 400);
         }
         
-        // Save product
+        // Save city
         $product = City::create($data);
 
         // Check save
@@ -64,6 +64,7 @@ class CityController extends Controller
             ], 400);
         }
 
+        // Update city
         if($city->update($data))
             return 'City successfuly updated.';
 
@@ -72,9 +73,11 @@ class CityController extends Controller
 
     public function delete($city_id)
     {
+        // Check city exist
         if(!City::find($city_id))
             return 'City not found.';
 
+        // Delete city
         if(City::find($city_id)->delete())
             return 'City delete successfuly.';
 

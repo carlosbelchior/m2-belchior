@@ -10,7 +10,7 @@ class GroupController extends Controller
 {
     public function all()
     {
-        // Return all products
+        // Return all groups
         return Group::all();
     }
 
@@ -29,7 +29,7 @@ class GroupController extends Controller
             ], 400);
         }
         
-        // Save product
+        // Save group
         $group = Group::create($data);
 
         // Check save
@@ -40,14 +40,14 @@ class GroupController extends Controller
 
     }
 
-    public function update(Request $request, $city_id)
+    public function update(Request $request, $group_id)
     {
         // Get data post
         $data = $request->all();
-        $group_city = Group::find($city_id);
+        $group = Group::find($group_id);
 
-        // Check city exist
-        if(!Group::find($city_id))
+        // Check group exist
+        if(!Group::find($group_id))
             return 'Group not found.';
 
         // Validate data post
@@ -60,7 +60,8 @@ class GroupController extends Controller
             ], 400);
         }
 
-        if($group_city->update($data))
+        // Update group
+        if($group->update($data))
             return 'Group successfuly updated.';
 
         return 'Oops! An error ocurred, check data and try again.';
@@ -68,9 +69,11 @@ class GroupController extends Controller
 
     public function delete($group_id)
     {
+        // Check group exist
         if(!Group::find($group_id))
             return 'Group not found.';
 
+        // Delete group
         if(Group::find($group_id)->delete())
             return 'Group delete successfuly.';
 
