@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('state', 2);
-            $table->foreignId('group_id')->constrained('cities_group');
+            $table->string('name')->unique();
+            $table->foreignId('group_id')->nullable()->constrained('cities_group');
             $table->timestamps();
 
         });
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cidades');
+        Schema::dropIfExists('cities');
     }
 };
