@@ -27,7 +27,7 @@ class CityController extends Controller
         // Validate data post
         $validator = Validator::make($data, [
             'name' => 'required|min:3',
-            'campaign_id' => 'nullable|numeric',
+            'group_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -59,7 +59,7 @@ class CityController extends Controller
         // Validate data post
         $validator = Validator::make($data, [
             'name' => 'required|min:3',
-            'campaign_id' => 'nullable|numeric',
+            'group_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
             return response()->json([

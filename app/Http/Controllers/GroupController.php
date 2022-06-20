@@ -26,7 +26,8 @@ class GroupController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\Group,name'
+            'name' => 'required|unique:App\Models\Group,name',
+            'campaign_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -57,7 +58,8 @@ class GroupController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\Group,name'
+            'name' => 'required|unique:App\Models\Group,name',
+            'campaign_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
             return response()->json([
