@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Group;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+
+use App\Models\CitiesGroup;
+use App\Models\Group;
 
 class GroupController extends Controller
 {
@@ -73,9 +77,23 @@ class GroupController extends Controller
         if(!Group::find($group_id))
             return 'Group not found.';
 
-        // Delete group
-        if(Group::find($group_id)->delete())
+        // Start transaction
+        DB::beginTransaction();
+
+        // Try delete group and city_group
+        try {
+
+            CitiesGroup::where('group_id', $group_id)->delete();
+            Group::find($group_id)->delete();
+    
+            DB::commit();
+    
             return 'Group delete successfuly.';
+    
+        } catch(Exception $e) {
+            DB::rollback();
+            return 'Oops! An error ocurred, try again.';
+        }
 
         return 'Oops! An error ocurred, try again.';
     }

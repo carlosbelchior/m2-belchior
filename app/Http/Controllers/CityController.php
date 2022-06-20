@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CitiesGroup;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\City;
+use App\Models\CitiesGroup;
 
 class CityController extends Controller
 {
@@ -82,6 +82,7 @@ class CityController extends Controller
         // Start transaction
         DB::beginTransaction();
 
+        // Try delete city and city_group
         try {
 
             CitiesGroup::where('city_id', $city_id)->delete();
