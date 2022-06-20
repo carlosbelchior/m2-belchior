@@ -9,4 +9,6 @@ class Campaign extends Model
 {
     use HasFactory;
     protected $table = 'campaigns';
+    protected $fillable = ['name', 'status'];
+
 }
