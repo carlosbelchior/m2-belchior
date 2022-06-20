@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CitiesGroup;
-use App\Models\City;
 use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CityController extends Controller
+class GroupController extends Controller
 {
     public function all()
     {
-        // Return all cities
-        return City::all();
+        // Return all groups
+        return Group::all();
     }
 
     public function insert(Request $request)
@@ -23,8 +21,7 @@ class CityController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\City,name',
-            'group_id' => 'nullable|numeric',
+            'name' => 'required|unique:App\Models\Group,name'
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -32,31 +29,30 @@ class CityController extends Controller
             ], 400);
         }
         
-        // Save city
-        $product = City::create($data);
+        // Save group
+        $group = Group::create($data);
 
         // Check save
-        if($product)
-            return 'City successfuly saved.';
+        if($group)
+            return 'Group successfuly saved.';
 
         return 'Oops! An error ocurred, check data and try again.';
 
     }
 
-    public function update(Request $request, $city_id)
+    public function update(Request $request, $group_id)
     {
         // Get data post
         $data = $request->all();
-        $city = City::find($city_id);
+        $group = Group::find($group_id);
 
-        // Check city exist
-        if(!City::find($city_id))
-            return 'City not found.';
+        // Check group exist
+        if(!Group::find($group_id))
+            return 'Group not found.';
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\City,name',
-            'group_id' => 'nullable|numeric',
+            'name' => 'required|unique:App\Models\Group,name'
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -64,22 +60,22 @@ class CityController extends Controller
             ], 400);
         }
 
-        // Update city
-        if($city->update($data))
-            return 'City successfuly updated.';
+        // Update group
+        if($group->update($data))
+            return 'Group successfuly updated.';
 
         return 'Oops! An error ocurred, check data and try again.';
     }
 
-    public function delete($city_id)
+    public function delete($group_id)
     {
-        // Check city exist
-        if(!City::find($city_id))
-            return 'City not found.';
+        // Check group exist
+        if(!Group::find($group_id))
+            return 'Group not found.';
 
-        // Delete city
-        if(City::find($city_id)->delete())
-            return 'City delete successfuly.';
+        // Delete group
+        if(Group::find($group_id)->delete())
+            return 'Group delete successfuly.';
 
         return 'Oops! An error ocurred, try again.';
     }

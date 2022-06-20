@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cities', function (Blueprint $table) {
+        Schema::create('cities_group', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->foreignId('group_id')->nullable()->constrained('groups');
+            $table->foreignId('city_id')->nullable()->constrained('cities');
             $table->timestamps();
-
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cities');
+        Schema::dropIfExists('cities_group');
     }
 };

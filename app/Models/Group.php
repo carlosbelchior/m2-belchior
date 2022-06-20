@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CitiesGroup extends Model
+class Group extends Model
 {
     use HasFactory;
-    protected $table = 'cities_group';
-    protected $fillable = ['group_id', 'city_id'];
+    protected $table = 'groups';
+    protected $fillable = ['name'];
 }
