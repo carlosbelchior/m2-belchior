@@ -37,7 +37,7 @@ class GroupController extends Controller
         }
 
         // Check campaign exist and actived
-        if(Campaign::find($request->input('campaign_id'))->status != 1)
+        if($request->input('campaign_id') && Campaign::find($request->input('campaign_id'))->status != 1)
             return 'Campaign not found or inactive.';
         
         // Save group

@@ -27,8 +27,7 @@ class ProductController extends Controller
         // Validate data post
         $validator = Validator::make($data, [
             'name' => 'required|min:3',
-            'price' => 'required|numeric',
-            'campaign_id' => 'nullable|numeric',
+            'price' => 'required|numeric'
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -68,8 +67,7 @@ class ProductController extends Controller
         // Validate data post
         $validator = Validator::make($data, [
             'name' => 'nullable|min:3',
-            'price' => 'nullable|numeric',
-            'campaign_id' => 'nullable|numeric',
+            'price' => 'nullable|numeric'
         ]);
         if($validator->fails()) {
             return response()->json([
