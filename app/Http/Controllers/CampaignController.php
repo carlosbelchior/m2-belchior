@@ -49,6 +49,10 @@ class CampaignController extends Controller
         // Check campaign exist
         if(!Campaign::find($campaign_id))
             return 'Campaign not found.';
+
+        // Remove blank inputs
+        if(!array_filter($request->all()))
+            return 'Enter at least one of the mandatory parameters';
     
         // Get data post
         $data = $request->all();
@@ -56,8 +60,8 @@ class CampaignController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|min:3',
-            'status' => 'required|numeric',
+            'name' => 'nullable|min:3',
+            'status' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -66,7 +70,7 @@ class CampaignController extends Controller
         }
 
         // Update city
-        if($campaign->update($data))
+        if($campaign->update(array_filter($data)))
             return 'Campaign successfuly updated.';
 
         return 'Oops! An error ocurred, check data and try again.';

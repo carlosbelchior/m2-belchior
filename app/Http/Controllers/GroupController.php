@@ -57,13 +57,17 @@ class GroupController extends Controller
         if(!Group::find($group_id))
             return 'Group not found.';
 
+        // Remove blank inputs
+        if(!array_filter($request->all()))
+            return 'Enter at least one of the mandatory parameters';
+
         // Get data post
         $data = $request->all();
         $group = Group::find($group_id);
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|min:3',
+            'name' => 'nullable|min:3',
             'campaign_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
@@ -73,15 +77,11 @@ class GroupController extends Controller
         }
 
         // Check campaign exist and actived
-        if(!$request->input('campaign_id'))
-            $data['campaign_id'] = NULL;
-
-        // Check campaign exist and actived
         if($request->input('campaign_id') && Campaign::find($request->input('campaign_id'))->status != 1)
             return 'Campaign not found or inactive.';
             
         // Update group
-        if($group->update($data))
+        if($group->update(array_filter($data)))
             return 'Group successfuly updated.';
 
         return 'Oops! An error ocurred, check data and try again.';

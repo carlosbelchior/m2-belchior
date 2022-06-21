@@ -26,7 +26,7 @@ class ProductController extends Controller
         
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\Product,name',
+            'name' => 'required|min:3',
             'price' => 'required|numeric',
             'campaign_id' => 'nullable|numeric',
         ]);
@@ -52,6 +52,10 @@ class ProductController extends Controller
         // Check product exist
         if(!Product::find($product_id))
             return 'Product not found.';
+
+        // Remove blank inputs
+        if(!array_filter($request->all()))
+            return 'Enter at least one of the mandatory parameters';
             
         // Get data post
         $data = $request->all();
@@ -63,8 +67,8 @@ class ProductController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|unique:App\Models\Product,name',
-            'price' => 'required|numeric',
+            'name' => 'nullable|min:3',
+            'price' => 'nullable|numeric',
             'campaign_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
@@ -73,7 +77,7 @@ class ProductController extends Controller
             ], 400);
         }
 
-        if($product->update($data))
+        if($product->update(array_filter($data)))
             return 'Product successfuly updated.';
 
         return 'Oops! An error ocurred, check data and try again.';
