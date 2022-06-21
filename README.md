@@ -1,64 +1,83 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# API M2 - BELCHIOR
+API software for M2 Digital.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Technologies
+The following technologies are being used to make this project work.
 
-## About Laravel
+- *Laravel 9.x* - One of the most popular PHP Frameworks.
+- *MySQL (or MariaDB)* - MySQL is an open-source relational database management system. Its name is a combination of "My", the name of co-founder Michael Widenius's daughter, and "SQL", the abbreviation for Structured Query Language.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
+_Coming..._
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Project Setup
+This project is basically a Laravel project. To run it you just need to follow the requirements of the framework. Is strongly recommended to run this project using Docker when you're in the development phase. You can install Docker following the instructions on the link [get Docker](https://docs.docker.com/engine/install/).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The next sessions you'll give you some instructions on how to setup this application to run in a Docker container.
 
-## Learning Laravel
+### Run it locally
+The sections below describe how to set up the development environment.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### Start up
+To startup the application you can run the command shown below.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+docker-compose up --build -d
+```
 
-## Laravel Sponsors
+Docker command to access the php service:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```bash
+docker-compose exec php /bin/bash
+```
 
-### Premium Partners
+It will start the applicaiton using some docker containers (nginx, mysql and PHP).
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+#### Settings files
+Copy `.env.example` to `.env` and put your config variables like explained on [Laravel Config](https://laravel.com/docs/9.x/configuration).
 
-## Contributing
+NOTE: The default credentials for database are:
+- host: mysql
+- database: m2belchior
+- user: root
+- password: m2belchior
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Install dependences
 
-## Code of Conduct
+```bash
+composer install 
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Generate key
 
-## Security Vulnerabilities
+```bash
+php artisan key:generate 
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Run migrations
+Enter in the php service and run migration as in a common Laravel project.
 
-## License
+```bash
+php artisan migrate # run migrations
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### Run Database seeders
+```bash
+php artisan db:seed # run seeders
+```
+
+#### Run Tests
+Enter in the php service and run command above:
+
+```bash
+php artisan test
+```
+
+#### Stop the application
+To stop the application you can execute the following command
+
+```bash
+docker-compose down -v
+```
+
+You can performe whatever command you want using `docker-compose`, the Makefile will just make it easier. To see other commands from make look at [Makefile](Makefile).
