@@ -48,7 +48,7 @@ Route::prefix('product')->group(function () {
     Route::get('/delete/{id}', [ProductController::class, 'delete']);
 });
 
-Route::prefix('products-discount')->group(function () {
+Route::prefix('discounts')->group(function () {
     Route::get('/all', [ProductsDiscountController::class, 'all']);
     Route::post('/insert', [ProductsDiscountController::class, 'insert']);
     Route::post('/update/{id}', [ProductsDiscountController::class, 'update']);
