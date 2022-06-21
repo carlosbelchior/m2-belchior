@@ -60,6 +60,10 @@ class ProductsDiscountController extends Controller
         // Check discount exist
         if(!ProductDiscount::find($campaign_id))
             return 'Discount not found.';
+
+        // Remove blank inputs
+        if(!array_filter($request->all()))
+            return 'Enter at least one of the mandatory parameters';
     
         // Get data post
         $data = $request->all();
@@ -67,9 +71,9 @@ class ProductsDiscountController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'campaign_id' => 'required|numeric',
-            'product_id' => 'required|numeric',
-            'discount' => 'required|numeric',
+            'campaign_id' => 'nullable|numeric',
+            'product_id' => 'nullable|numeric',
+            'discount' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
             return response()->json([
@@ -78,7 +82,7 @@ class ProductsDiscountController extends Controller
         }
 
         // Update discount
-        if($discount->update($data))
+        if($discount->update(array_filter($data)))
             return 'Discount successfuly updated.';
 
         return 'Oops! An error ocurred, check data and try again.';

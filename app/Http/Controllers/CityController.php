@@ -55,6 +55,10 @@ class CityController extends Controller
         // Check city exist
         if(!City::find($city_id))
             return 'City not found.';
+
+        // Remove blank inputs
+        if(!array_filter($request->all()))
+            return 'Enter at least one of the mandatory parameters';
     
         // Get data post
         $data = $request->all();
@@ -62,7 +66,7 @@ class CityController extends Controller
 
         // Validate data post
         $validator = Validator::make($data, [
-            'name' => 'required|min:3',
+            'name' => 'nullable|min:3',
             'group_id' => 'nullable|numeric',
         ]);
         if($validator->fails()) {
@@ -76,7 +80,7 @@ class CityController extends Controller
             return 'Group not found.';
 
         // Update city
-        if($city->update($data))
+        if($city->update(array_filter($data)))
             return 'City successfuly updated.';
 
         return 'Oops! An error ocurred, check data and try again.';
