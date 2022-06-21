@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::table('campaigns')->insert([ 'name' => 'Segunda do Papoco Zenir' ]);
+        DB::table('campaigns')->insert([ 'name' => 'Black Fraude' ]);
 
         DB::table('groups')->insert([ 'name' => 'Sudeste', 'campaign_id' => 1]);
         DB::table('groups')->insert([ 'name' => 'Nordeste']);
@@ -32,5 +33,9 @@ class DatabaseSeeder extends Seeder
         DB::table('cities')->insert([ 'name' => 'Porto Alegre', 'group_id' => 1 ]);
         DB::table('cities')->insert([ 'name' => 'Belem', 'group_id' => 4 ]);
         DB::table('cities')->insert([ 'name' => 'Manaus', 'group_id' => 4 ]);
+
+        DB::table('products')->insert([ 'name' => 'Coca Cola', 'price' => 12.99]);
+
+        DB::table('products_discount')->insert([ 'campaign_id' => 1, 'product_id' => 1,  'discount' => 2.99]);
     }
 }
