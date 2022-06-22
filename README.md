@@ -92,14 +92,14 @@ docker-compose down -v
 For get city:
 ```json
 Method: GET
-URL: /api/product/all
+URL: /api/city/all
 ```
 
 
 For input new city:
 ```json
 Method: POST
-URL: /api/product/insert
+URL: /api/city/insert
 Data body:
 - 'name' => 'required | min:3',
 - 'group_id' => 'nullable | numeric'
@@ -110,7 +110,7 @@ For update city:
 - NOTE: At least 1 of the fields below must be completed
 ```json
 Method: POST
-URL: /api/product/update/ID_CITY
+URL: /api/city/update/ID_CITY
 Data body:
 - 'name' => 'nullable | min:3',
 - 'group_id' => 'nullable | numeric'
@@ -120,7 +120,7 @@ Data body:
 For delete city:
 ```json
 Method: GET
-URL: /api/product/delete/ID_CITY
+URL: /api/city/delete/ID_CITY
 ```
 
 
